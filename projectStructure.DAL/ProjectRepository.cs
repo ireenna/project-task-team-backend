@@ -7,40 +7,34 @@ using System.Threading.Tasks;
 
 namespace projectStructure.DAL
 {
-    public class Repository<TEntity>:IRepository<TEntity>
+    public class Repository<TEntity> : IRepository<TEntity> where TEntity : List<Entity>
     {
         protected readonly ThreadContext context;
         public Repository()
         {
             context = ThreadContext.getInstance();
         }
-        public virtual IEnumerable<TEntity> Get(Expression<Func<TEntity, bool>> filter = null)
+        public virtual IEnumerable<TEntity> Get()
         {
-            IQueryable<TEntity> query = context.Set<TEntity>();
-            if(filter != null)
-            {
-                query = query.Where(filter);
-            }
-            return query.ToList();
+            return context.projects.ToList() as List<TEntity>;
         }
-        void Create(TEntity entity, string createdBy = null)
+        public virtual void Create(TEntity entity, string createdBy = null)
         {
-            context.Set<TEntity>().Add(entity);
+            context.projects.Add(entity as Project);
         }
-        void Update(TEntity entity, string updatedBy = null)
+        public virtual void Update(TEntity entity, string updatedBy = null)
         {
-            context.Set<TEntity>().Attach(entity);
-            //context.Entry(entity).State = EntityState.Modified;
+            context.projects.Add(entity as Project);
         }
-        void Delete(object id)
+        public virtual void Delete(int id)
         {
-            TEntity entity = context.Set<TEntity>().Find(id);
-            Delete(entity);
+            var entity = context.projects.Where(x => x.Id == id);
+            Delete(entity as TEntity);
         }
-        void Delete(TEntity entity)
+        public virtual void Delete(TEntity entity)
         {
-            var dbSet = context.Set<TEntity>();
-            dbSet.Remove(entity);
+            var dbSet = context.projects;
+            dbSet.Remove(entity as Project);
         }
     }
 }
