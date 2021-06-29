@@ -4,38 +4,43 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
-using projectStructure.DAL.Models;
 
 namespace projectStructure.DAL
 {
-    public class Repository<TEntity>:IRepository<TEntity> where TEntity:List<Entity>
+    public class Repository<TEntity>:IRepository<TEntity>
     {
         protected readonly ThreadContext context;
         public Repository()
         {
             context = ThreadContext.getInstance();
         }
-        public virtual IEnumerable<TEntity> Get()
+        public virtual IEnumerable<TEntity> Get(Expression<Func<TEntity, bool>> filter = null)
         {
-            return context.projects.ToList() as List<TEntity>;
+            IQueryable<TEntity> query = context.Set<TEntity>();
+            if(filter != null)
+            {
+                query = query.Where(filter);
+            }
+            return query.ToList();
         }
-        public virtual void Create(TEntity entity, string createdBy = null)
+        void Create(TEntity entity, string createdBy = null)
         {
-            context.projects.Add(entity as Project);
+            context.Set<TEntity>().Add(entity);
         }
-        public virtual void Update(TEntity entity, string updatedBy = null)
+        void Update(TEntity entity, string updatedBy = null)
         {
-            context.projects.Add(entity as Project);
+            context.Set<TEntity>().Attach(entity);
+            //context.Entry(entity).State = EntityState.Modified;
         }
-        public virtual void Delete(int id)
+        void Delete(object id)
         {
-            var entity = context.projects.Where(x=>x.Id == id);
-            Delete(entity as TEntity);
+            TEntity entity = context.Set<TEntity>().Find(id);
+            Delete(entity);
         }
-        public virtual void Delete(TEntity entity)
+        void Delete(TEntity entity)
         {
-            var dbSet = context.projects;
-            dbSet.Remove(entity as Project);
+            var dbSet = context.Set<TEntity>();
+            dbSet.Remove(entity);
         }
     }
 }

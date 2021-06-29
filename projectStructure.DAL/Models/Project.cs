@@ -8,7 +8,7 @@ using projectStructure.Common.DTO;
 
 namespace projectStructure.DAL.Models
 {
-    public class Project
+    public class Project : Entity
     {
         public int Id { get; set; }
         public User Author { get; set; }

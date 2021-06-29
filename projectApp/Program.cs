@@ -6,7 +6,7 @@ namespace projectApp
     {
         static void Main(string[] args)
         {
-            DataService a = new DataService();
+            Console.WriteLine("Hello World!");
         }
     }
 }
