@@ -7,12 +7,12 @@ using System.Threading.Tasks;
 
 namespace projectStructure.DAL
 {
-    public interface IRepository<TEntity> 
+    public interface IRepository<TEntity>
     {
-        IEnumerable<TEntity> Get(Expression<Func<TEntity, bool>> filter = null);
+        IEnumerable<TEntity> Get();
         void Create(TEntity entity, string createdBy = null);
         void Update(TEntity entity, string updatedBy = null);
-        void Delete(object id);
+        void Delete(int id);
         void Delete(TEntity entity);
     }
 }
