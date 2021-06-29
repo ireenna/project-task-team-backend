@@ -16,7 +16,7 @@ namespace projectStructure.BLL.Services
         public DataService(IMapper mapper) : base(mapper) { }
 
         private readonly HttpClient client = new HttpClient() { BaseAddress = new Uri("https://bsa21.azurewebsites.net/api/") };
-        public async Task<List<Project>> GetAll()
+        public async Task<Boolean> GetAll()
         {
             var projects = await GetProjects();
             var tasks = await GetTasks();
@@ -32,8 +32,10 @@ namespace projectStructure.BLL.Services
             var all = projects.GroupJoin(_context.tasks, p => p.Id, tks => tks.ProjectId, (p, tks) => new { project = p, tasks = tks })
                 .Join(users, p => p.project.AuthorId, u => u.Id, (p, u) => new { project = p.project, tasks = p.tasks, author = u })
                 .Join(_context.teams, p => p.project.TeamId, tms => tms.Id, (p, tms) => new Project(p.project, p.tasks, _mapper.Map<User>(p.author), tms)).ToList();
-            
-            return all;
+
+            _context.projects = all;
+
+            return Convert.ToBoolean(all.Count);
         }
         public async Task<List<ProjectDTO>> GetProjects()
         {

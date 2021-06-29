@@ -11,7 +11,7 @@ namespace projectStructure.DAL
         public List<Tasks> tasks { get; set; }
         public List<User> users { get; set; }
         public List<Team> teams { get; set; }
-        public List<Project> projInfo { get; set; }
+        //public List<Project> projInfo { get; set; }
 
         private static ThreadContext instance;
         private ThreadContext()
@@ -20,7 +20,7 @@ namespace projectStructure.DAL
             tasks = new List<Tasks>();
             users = new List<User>();
             teams = new List<Team>();
-            projInfo = new List<Project>();
+            //projInfo = new List<Project>();
         }
         public static ThreadContext getInstance()
         {

@@ -4,13 +4,14 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
+using projectStructure.DAL.Models;
 
 namespace projectStructure.DAL
 {
-    public class Repository<TEntity> : IRepository<TEntity> where TEntity : List<Entity>
+    public class ProjectRepository<TEntity> : IRepository<TEntity>
     {
         protected readonly ThreadContext context;
-        public Repository()
+        public ProjectRepository()
         {
             context = ThreadContext.getInstance();
         }
@@ -29,10 +30,6 @@ namespace projectStructure.DAL
         public virtual void Delete(int id)
         {
             var entity = context.projects.Where(x => x.Id == id);
-            Delete(entity as TEntity);
-        }
-        public virtual void Delete(TEntity entity)
-        {
             var dbSet = context.projects;
             dbSet.Remove(entity as Project);
         }

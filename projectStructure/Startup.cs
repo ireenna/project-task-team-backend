@@ -36,6 +36,8 @@ namespace projectStructure
             Assembly.GetExecutingAssembly());
 
             services.AddSingleton<DataService>();
+            services.AddScoped<ProjectService>();
+            services.AddScoped<LinqService>();
             services.AddControllers();
             services.AddSwaggerGen(c =>
             {

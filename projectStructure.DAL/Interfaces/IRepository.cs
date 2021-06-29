@@ -13,6 +13,5 @@ namespace projectStructure.DAL
         void Create(TEntity entity, string createdBy = null);
         void Update(TEntity entity, string updatedBy = null);
         void Delete(int id);
-        void Delete(TEntity entity);
     }
 }
