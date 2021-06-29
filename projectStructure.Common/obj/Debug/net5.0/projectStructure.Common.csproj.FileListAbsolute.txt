@@ -1,0 +1,12 @@
+C:\Users\Irina\source\repos\projectStructure\projectStructure.Common\bin\Debug\net5.0\projectStructure.Common.deps.json
+C:\Users\Irina\source\repos\projectStructure\projectStructure.Common\bin\Debug\net5.0\projectStructure.Common.dll
+C:\Users\Irina\source\repos\projectStructure\projectStructure.Common\bin\Debug\net5.0\ref\projectStructure.Common.dll
+C:\Users\Irina\source\repos\projectStructure\projectStructure.Common\bin\Debug\net5.0\projectStructure.Common.pdb
+C:\Users\Irina\source\repos\projectStructure\projectStructure.Common\obj\Debug\net5.0\projectStructure.Common.csproj.AssemblyReference.cache
+C:\Users\Irina\source\repos\projectStructure\projectStructure.Common\obj\Debug\net5.0\projectStructure.Common.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\Irina\source\repos\projectStructure\projectStructure.Common\obj\Debug\net5.0\projectStructure.Common.AssemblyInfoInputs.cache
+C:\Users\Irina\source\repos\projectStructure\projectStructure.Common\obj\Debug\net5.0\projectStructure.Common.AssemblyInfo.cs
+C:\Users\Irina\source\repos\projectStructure\projectStructure.Common\obj\Debug\net5.0\projectStructure.Common.csproj.CoreCompileInputs.cache
+C:\Users\Irina\source\repos\projectStructure\projectStructure.Common\obj\Debug\net5.0\projectStructure.Common.dll
+C:\Users\Irina\source\repos\projectStructure\projectStructure.Common\obj\Debug\net5.0\ref\projectStructure.Common.dll
+C:\Users\Irina\source\repos\projectStructure\projectStructure.Common\obj\Debug\net5.0\projectStructure.Common.pdb

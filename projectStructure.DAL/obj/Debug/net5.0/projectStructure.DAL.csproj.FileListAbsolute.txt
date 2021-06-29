@@ -1,0 +1,15 @@
+C:\Users\Irina\source\repos\projectStructure\projectStructure.DAL\bin\Debug\net5.0\projectStructure.DAL.deps.json
+C:\Users\Irina\source\repos\projectStructure\projectStructure.DAL\bin\Debug\net5.0\projectStructure.DAL.dll
+C:\Users\Irina\source\repos\projectStructure\projectStructure.DAL\bin\Debug\net5.0\ref\projectStructure.DAL.dll
+C:\Users\Irina\source\repos\projectStructure\projectStructure.DAL\bin\Debug\net5.0\projectStructure.DAL.pdb
+C:\Users\Irina\source\repos\projectStructure\projectStructure.DAL\bin\Debug\net5.0\projectStructure.Common.dll
+C:\Users\Irina\source\repos\projectStructure\projectStructure.DAL\bin\Debug\net5.0\projectStructure.Common.pdb
+C:\Users\Irina\source\repos\projectStructure\projectStructure.DAL\obj\Debug\net5.0\projectStructure.DAL.csproj.AssemblyReference.cache
+C:\Users\Irina\source\repos\projectStructure\projectStructure.DAL\obj\Debug\net5.0\projectStructure.DAL.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\Irina\source\repos\projectStructure\projectStructure.DAL\obj\Debug\net5.0\projectStructure.DAL.AssemblyInfoInputs.cache
+C:\Users\Irina\source\repos\projectStructure\projectStructure.DAL\obj\Debug\net5.0\projectStructure.DAL.AssemblyInfo.cs
+C:\Users\Irina\source\repos\projectStructure\projectStructure.DAL\obj\Debug\net5.0\projectStructure.DAL.csproj.CoreCompileInputs.cache
+C:\Users\Irina\source\repos\projectStructure\projectStructure.DAL\obj\Debug\net5.0\projectStructure.DAL.csproj.CopyComplete
+C:\Users\Irina\source\repos\projectStructure\projectStructure.DAL\obj\Debug\net5.0\projectStructure.DAL.dll
+C:\Users\Irina\source\repos\projectStructure\projectStructure.DAL\obj\Debug\net5.0\ref\projectStructure.DAL.dll
+C:\Users\Irina\source\repos\projectStructure\projectStructure.DAL\obj\Debug\net5.0\projectStructure.DAL.pdb

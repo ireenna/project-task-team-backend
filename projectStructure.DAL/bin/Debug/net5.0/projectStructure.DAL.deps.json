@@ -1,0 +1,36 @@
+{
+  "runtimeTarget": {
+    "name": ".NETCoreApp,Version=v5.0",
+    "signature": ""
+  },
+  "compilationOptions": {},
+  "targets": {
+    ".NETCoreApp,Version=v5.0": {
+      "projectStructure.DAL/1.0.0": {
+        "dependencies": {
+          "projectStructure.Common": "1.0.0"
+        },
+        "runtime": {
+          "projectStructure.DAL.dll": {}
+        }
+      },
+      "projectStructure.Common/1.0.0": {
+        "runtime": {
+          "projectStructure.Common.dll": {}
+        }
+      }
+    }
+  },
+  "libraries": {
+    "projectStructure.DAL/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "projectStructure.Common/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    }
+  }
+}

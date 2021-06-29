@@ -1,0 +1,17 @@
+C:\Users\Irina\source\repos\projectStructure\projectStructure.BLL\bin\Debug\net5.0\projectStructure.BLL.deps.json
+C:\Users\Irina\source\repos\projectStructure\projectStructure.BLL\bin\Debug\net5.0\projectStructure.BLL.dll
+C:\Users\Irina\source\repos\projectStructure\projectStructure.BLL\bin\Debug\net5.0\ref\projectStructure.BLL.dll
+C:\Users\Irina\source\repos\projectStructure\projectStructure.BLL\bin\Debug\net5.0\projectStructure.BLL.pdb
+C:\Users\Irina\source\repos\projectStructure\projectStructure.BLL\bin\Debug\net5.0\projectStructure.Common.dll
+C:\Users\Irina\source\repos\projectStructure\projectStructure.BLL\bin\Debug\net5.0\projectStructure.Common.pdb
+C:\Users\Irina\source\repos\projectStructure\projectStructure.BLL\obj\Debug\net5.0\projectStructure.BLL.csproj.AssemblyReference.cache
+C:\Users\Irina\source\repos\projectStructure\projectStructure.BLL\obj\Debug\net5.0\projectStructure.BLL.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\Irina\source\repos\projectStructure\projectStructure.BLL\obj\Debug\net5.0\projectStructure.BLL.AssemblyInfoInputs.cache
+C:\Users\Irina\source\repos\projectStructure\projectStructure.BLL\obj\Debug\net5.0\projectStructure.BLL.AssemblyInfo.cs
+C:\Users\Irina\source\repos\projectStructure\projectStructure.BLL\obj\Debug\net5.0\projectStructure.BLL.csproj.CoreCompileInputs.cache
+C:\Users\Irina\source\repos\projectStructure\projectStructure.BLL\obj\Debug\net5.0\projectStructure.BLL.csproj.CopyComplete
+C:\Users\Irina\source\repos\projectStructure\projectStructure.BLL\obj\Debug\net5.0\projectStructure.BLL.dll
+C:\Users\Irina\source\repos\projectStructure\projectStructure.BLL\obj\Debug\net5.0\ref\projectStructure.BLL.dll
+C:\Users\Irina\source\repos\projectStructure\projectStructure.BLL\obj\Debug\net5.0\projectStructure.BLL.pdb
+C:\Users\Irina\source\repos\projectStructure\projectStructure.BLL\bin\Debug\net5.0\projectStructure.DAL.dll
+C:\Users\Irina\source\repos\projectStructure\projectStructure.BLL\bin\Debug\net5.0\projectStructure.DAL.pdb
