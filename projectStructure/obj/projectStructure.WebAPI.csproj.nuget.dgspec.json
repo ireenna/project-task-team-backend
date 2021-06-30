@@ -225,6 +225,9 @@
             "projectReferences": {
               "C:\\Users\\Irina\\source\\repos\\projectStructure\\projectStructure.BLL\\projectStructure.BLL.csproj": {
                 "projectPath": "C:\\Users\\Irina\\source\\repos\\projectStructure\\projectStructure.BLL\\projectStructure.BLL.csproj"
+              },
+              "C:\\Users\\Irina\\source\\repos\\projectStructure\\projectStructure.Common\\projectStructure.Common.csproj": {
+                "projectPath": "C:\\Users\\Irina\\source\\repos\\projectStructure\\projectStructure.Common\\projectStructure.Common.csproj"
               }
             }
           }

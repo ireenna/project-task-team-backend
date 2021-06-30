@@ -38,7 +38,7 @@ namespace projectStructure.BLL.Services
         {
             var info = _projRepo.Get()
                 .SelectMany(p => p.Tasks)
-                .Where(x => x.Performer.Id == id && x.FinishedAt.Value.Year == DateTime.Now.Year)
+                .Where(x => x.Performer.Id == id && x.FinishedAt <= DateTime.Now && x.FinishedAt >= new DateTime(2021, 1, 1))
                 .Select(x => (id: x.Id, name: x.Name))
                 .ToList();
 

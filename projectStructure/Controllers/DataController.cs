@@ -8,7 +8,7 @@ using projectStructure.BLL.Services;
 namespace projectStructure.WebAPI.Controllers
 {
     [ApiController]
-    [Route("[controller]")]
+    [Route("api/[controller]")]
     public class DataController : ControllerBase
     {
         private readonly DataService _dataService;
@@ -21,7 +21,11 @@ namespace projectStructure.WebAPI.Controllers
         [HttpGet]
         public async Task<ActionResult> RefreshInfo()
         {
-            return Ok(await _dataService.GetAll());
+            if (await _dataService.GetAll())
+            {
+                return Ok();
+            }
+            return BadRequest();
         }
     }
 }

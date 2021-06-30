@@ -30,13 +30,5 @@ namespace projectStructure.Common.Models
             CreatedAt = p.CreatedAt;
             Tasks = ts.ToList();
         }
-        public override string ToString()
-        {
-            string strTasks = null;
-            Tasks.ForEach(t => strTasks += $"{t.Id}. {t.Name} Performer: {t.Performer.FirstName} {t.Performer.LastName}\n");
-            return $"{Id}. Name: {Name}\nAuthor: {Author.FirstName} {Author.LastName}\n" +
-                $"Descriprion: {Description}\nTeam: {Team.Name}.\n" +
-                $"Deadline: {Deadline}\nTasks:\n{strTasks ?? "No tasks."}\n";
-        }
     }
 }

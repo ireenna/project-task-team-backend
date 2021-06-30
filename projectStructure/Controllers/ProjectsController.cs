@@ -6,11 +6,12 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using projectStructure.BLL.Services;
 using projectStructure.Common.Models;
+using projectStructure.Common.DTOapp;
 
 namespace projectStructure.Controllers
 {
     [ApiController]
-    [Route("[controller]")]
+    [Route("api/[controller]")]
     public class ProjectsController : ControllerBase
     {
         private readonly DataService _dataService;
@@ -26,6 +27,11 @@ namespace projectStructure.Controllers
         public IEnumerable<Project> Get()
         {
             return _projectService.GetAllProjects();
+        }
+        [HttpPost]
+        public ActionResult Create([FromBody] ProjectCreateDTO proj)
+        {
+            return _projectService.Create(proj);
         }
     }
 }

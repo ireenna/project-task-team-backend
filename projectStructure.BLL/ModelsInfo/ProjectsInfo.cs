@@ -13,12 +13,5 @@ namespace projectStructure.BLL.ModelsInfo
         public Tasks LongestTaskByDescr { get; set; }
         public Tasks ShortestTaskByName { get; set; }
         public int UsersCount { get; set; }
-        public override string ToString()
-        {
-            return $"Project: {Project.Name}.\n" +
-                $"Longest task (by description): {LongestTaskByDescr?.Name ?? "-"}. {LongestTaskByDescr?.Description}\n" +
-                $"Shortest task (by name): {ShortestTaskByName?.Name ?? "-"}\n" +
-                $"Users count: {UsersCount}\n";
-        }
     }
 }
