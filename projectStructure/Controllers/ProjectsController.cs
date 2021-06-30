@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using projectStructure.BLL.Services;
-using projectStructure.DAL.Models;
+using projectStructure.Common.Models;
 
 namespace projectStructure.Controllers
 {

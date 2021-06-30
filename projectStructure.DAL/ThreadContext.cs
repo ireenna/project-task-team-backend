@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using projectStructure.DAL.Models;
+using projectStructure.Common.Models;
 
 namespace projectStructure.DAL
 {

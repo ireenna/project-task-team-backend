@@ -6,8 +6,8 @@ using System.Threading.Tasks;
 using AutoMapper;
 using Newtonsoft.Json;
 using projectStructure.Common;
-using projectStructure.DAL.Models;
 using projectStructure.Common.DTO;
+using projectStructure.Common.Models;
 
 namespace projectStructure.BLL.Services
 {

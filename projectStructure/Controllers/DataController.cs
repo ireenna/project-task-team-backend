@@ -4,7 +4,6 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using projectStructure.BLL.Services;
-using projectStructure.DAL.Models;
 
 namespace projectStructure.WebAPI.Controllers
 {

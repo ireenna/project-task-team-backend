@@ -6,6 +6,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\projectStructure.BLL\projectStructure.BLL.csproj" />
     <ProjectReference Include="..\projectStructure.Common\projectStructure.Common.csproj" />
   </ItemGroup>
 

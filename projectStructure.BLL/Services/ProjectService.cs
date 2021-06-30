@@ -4,8 +4,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using AutoMapper;
+using projectStructure.Common.Models;
 using projectStructure.DAL;
-using projectStructure.DAL.Models;
 
 namespace projectStructure.BLL.Services
 {

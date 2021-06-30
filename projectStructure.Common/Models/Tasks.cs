@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using projectStructure.Common.DTO;
 
-namespace projectStructure.DAL.Models
+namespace projectStructure.Common.Models
 {
     public class Tasks
     {

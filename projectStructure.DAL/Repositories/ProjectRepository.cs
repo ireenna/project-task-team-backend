@@ -4,7 +4,7 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
-using projectStructure.DAL.Models;
+using projectStructure.Common.Models;
 
 namespace projectStructure.DAL
 {

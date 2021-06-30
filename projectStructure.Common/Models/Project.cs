@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using projectStructure.Common;
 using projectStructure.Common.DTO;
 
-namespace projectStructure.BLL.Models
+namespace projectStructure.Common.Models
 {
     public class Project
     {
