@@ -4,57 +4,48 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
+using projectStructure.BLL.Models;
 using projectStructure.BLL.ModelsInfo;
 using projectStructure.BLL.Services;
-using projectStructure.Common.Models;
+using projectStructure.DAL;
+using projectStructure.DAL.DAL;
 
 namespace projectStructure.WebAPI.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
-    public class InfoController : ControllerBase
+    public class UsersController : ControllerBase
     {
         private readonly LinqService _linqService;
 
-        public InfoController(LinqService linqService)
+        public UsersController(LinqService linqService)
         {
             _linqService = linqService;
         }
-
-        [HttpGet("tasks/{id}")]
-        public Dictionary<Project, int> GetQuantityOfUserTasks([FromRoute] int id)
+        [HttpGet("{id}/project/alltasks")]
+        public Dictionary<FullProjectsDAL, int> GetQuantityOfUserTasks([FromRoute] int id)
         {
             return _linqService.GetQuantityOfUserTasks(id);
         }
-        [HttpGet("users/{id}/tasks")]
+        [HttpGet("{id}/tasks/filtered")]
         public List<Tasks> GetUserTasks([FromRoute] int id)
         {
             return _linqService.GetUserTasks(id);
         }
-        [HttpGet("users/{id}/tasks/finished")]
+        [HttpGet("{id}/tasks/finished")]
         public string GetUserFinishedTasks([FromRoute] int id)
         {
             return JsonConvert.SerializeObject(_linqService.GetUserFinishedTasks(id), Formatting.Indented);
         }
-        [HttpGet("teams/sorted")]
-        public string GetSortedUserTeams()
-        {
-            return JsonConvert.SerializeObject(_linqService.GetSortedUsersTeams(), Formatting.Indented);
-        }
-        [HttpGet("users/sorted")]
-        public List<IGrouping<User, Tasks>> GetSortedUsersWithTasks()
+        [HttpGet("tasks/sorted")]
+        public List<IGrouping<UserDAL, FullTasksDAL>> GetSortedUsersWithTasks()
         {
             return _linqService.GetSortedUsersWithTasks();
         }
-        [HttpGet("users/{id}/tasks/info")]
-        public UserTaskInfo GetUserTasksInfo([FromRoute]int id)
+        [HttpGet("{id}/tasks/info")]
+        public UserTaskInfo GetUserTasksInfo([FromRoute] int id)
         {
             return _linqService.GetUserTasksInfo(id);
-        }
-        [HttpGet("projects/info")]
-        public List<ProjectsInfo> GetProjectsInfo()
-        {
-            return _linqService.GetProjectsInfo();
         }
     }
 }

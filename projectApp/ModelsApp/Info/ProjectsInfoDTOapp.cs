@@ -6,11 +6,11 @@ using System.Threading.Tasks;
 
 namespace projectStructureApp.ModelsDTOapp
 {
-    public struct ProjectsInfoDTOapp
+    public class ProjectsInfoDTOapp
     {
-        public ProjectDTOapp Project { get; set; }
-        public TasksDTOapp LongestTaskByDescr { get; set; }
-        public TasksDTOapp ShortestTaskByName { get; set; }
+        public FullProjectDTOapp Project { get; set; }
+        public FullTasksDTOapp LongestTaskByDescr { get; set; }
+        public FullTasksDTOapp ShortestTaskByName { get; set; }
         public int UsersCount { get; set; }
         public override string ToString()
         {

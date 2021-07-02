@@ -8,16 +8,16 @@ using projectStructure.Common.DTO;
 
 namespace projectStructureApp.ModelsDTOapp
 {
-    public class ProjectDTOapp
+    public class FullProjectDTOapp
     {
         public int Id { get; set; }
         public UserDTOapp Author { get; set; }
-        public TeamDTOapp Team { get; set; }
+        public FullTeamDTOapp Team { get; set; }
         public string Name { get; set; }
         public string Description { get; set; }
         public DateTime Deadline { get; set; }
         public DateTime CreatedAt { get; set; }
-        public List<TasksDTOapp> Tasks { get; set; }
+        public List<FullTasksDTOapp> Tasks { get; set; }
         public override string ToString()
         {
             string strTasks = null;

@@ -3,11 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using projectStructure.Common.Models;
+using projectStructure.BLL.Models;
 
 namespace projectStructure.BLL.ModelsInfo
 {
-    public struct ProjectsInfo
+    public class ProjectsInfo
     {
         public Project Project { get; set; }
         public Tasks LongestTaskByDescr { get; set; }

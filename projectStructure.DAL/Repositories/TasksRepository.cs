@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using projectStructure.Common.Models;
 
 namespace projectStructure.DAL
 {
@@ -18,19 +17,25 @@ namespace projectStructure.DAL
         {
             return context.tasks.ToList() as List<TEntity>;
         }
+        public virtual TasksDAL Get(int id)
+        {
+            return context.tasks.Where(x => x.Id == id).FirstOrDefault();
+        }
         public virtual void Create(TEntity entity, string createdBy = null)
         {
-            context.tasks.Add(entity as Tasks);
+            var task = (entity as TasksDAL);
+            task.Id = context.tasks.Count();
+            context.tasks.Add(task);
         }
         public virtual void Update(TEntity entity, string updatedBy = null)
         {
-            context.tasks.Add(entity as Tasks);
+            var p = entity as TasksDAL;
+            context.tasks[p.Id] = p;
         }
         public virtual void Delete(int id)
         {
-            var entity = context.tasks.Where(x => x.Id == id);
-            var dbSet = context.tasks;
-            dbSet.Remove(entity as Tasks);
+            var entity = context.tasks.Where(x => x.Id == id).FirstOrDefault();
+            context.tasks.Remove(entity);
         }
     }
 }

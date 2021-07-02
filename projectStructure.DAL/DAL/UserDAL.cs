@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace projectStructure.Common.Models
+namespace projectStructure.DAL
 {
-    public class User
+    public class UserDAL
     {
         public int Id { get; set; }
         public int? TeamId { get; set; }

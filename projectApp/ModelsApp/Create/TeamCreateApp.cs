@@ -4,13 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace projectStructure.Common.Models
+namespace projectStructureApp.ModelsApp.Create
 {
-    public enum TaskState
+    public class TeamCreateApp
     {
-        ToDo,
-        InProgress,
-        Done,
-        Canceled
+        public string Name { get; set; }
     }
 }

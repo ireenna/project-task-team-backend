@@ -32,12 +32,17 @@ namespace projectStructure
             services.AddAutoMapper(cfg =>
             {
                 cfg.AddProfile<UserProfile>();
+                cfg.AddProfile<ProjectProfile>();
+                cfg.AddProfile<TasksProfile>();
+                cfg.AddProfile<TeamProfile>();
             },
             Assembly.GetExecutingAssembly());
 
             services.AddSingleton<DataService>();
             services.AddScoped<ProjectService>();
             services.AddScoped<LinqService>();
+            services.AddScoped<TeamService>();
+            services.AddScoped<TasksService>();
             services.AddControllers();
             services.AddSwaggerGen(c =>
             {

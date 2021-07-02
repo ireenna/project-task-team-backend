@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using projectStructure.Common.Models;
+using projectStructure.BLL.Models;
 
 namespace projectStructure.BLL.ModelsInfo
 {

@@ -3,19 +3,17 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using projectStructure.Common.DTO;
+using projectStructureApp.ModelsDTOapp;
 
-namespace projectStructureApp.ModelsDTOapp
+namespace projectStructureApp.ModelsApp.Update
 {
-    public class TasksDTOapp
+    public class TasksUpdateApp
     {
-        public int Id { get; set; }
         public int ProjectId { get; set; }
-        public UserDTOapp Performer { get; set; }
+        public int PerformerId { get; set; }
         public string Name { get; set; }
         public string Description { get; set; }
         public TaskStateDTOapp State { get; set; }
-        public DateTime CreatedAt { get; set; }
         public DateTime? FinishedAt { get; set; }
     }
 }

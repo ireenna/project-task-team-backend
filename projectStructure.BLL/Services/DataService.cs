@@ -5,9 +5,11 @@ using System.Net.Http;
 using System.Threading.Tasks;
 using AutoMapper;
 using Newtonsoft.Json;
+using projectStructure.BLL.Models;
 using projectStructure.Common;
 using projectStructure.Common.DTO;
-using projectStructure.Common.Models;
+using projectStructure.DAL;
+using projectStructure.DAL.DAL;
 
 namespace projectStructure.BLL.Services
 {
@@ -19,23 +21,46 @@ namespace projectStructure.BLL.Services
         public async Task<Boolean> GetAll()
         {
             var projects = await GetProjects();
+            _context.projects = projects.Select(x => _mapper.Map<ProjectDAL>(x)).ToList();
             var tasks = await GetTasks();
+            _context.tasks = tasks.Select(x => _mapper.Map<TasksDAL>(x)).ToList();
             var users = await GetUsers();
+            _context.users = users.Select(x => _mapper.Map<UserDAL>(x)).ToList();
             var teams = await GetTeams();
+            _context.teams = teams.Select(x => _mapper.Map<TeamDAL>(x)).ToList();
 
-            _context.tasks = tasks.Join(users, t => t.PerformerId, u => u.Id, (t, u) => new Tasks(t, _mapper.Map<User>(u))).ToList();
+            var fullteams = teams.Select(x => new FullTeamDAL()
+            {
+                CreatedAt = x.CreatedAt,
+                Id = x.Id,
+                Name = x.Name,
+                Participants =users.Where(y=>y.TeamId == x.Id).Select(x=>_mapper.Map<UserDAL>(x)).ToList()
+            }).ToList();
 
-            _context.teams = teams.GroupJoin(users, t => t.Id, u => u.TeamId, (t, u) => new Team(t, u.Select(u=>_mapper.Map<User>(u)))).ToList();
+            var fulltasks = tasks.Select(x => new FullTasksDAL()
+            {
+                CreatedAt = x.CreatedAt,
+                Id = x.Id,
+                Name = x.Name,
+                FinishedAt = x.FinishedAt,
+                Description = x.Description,
+                Performer = users.Where(y => y.Id == x.PerformerId).Select(x => _mapper.Map<UserDAL>(x)).FirstOrDefault()
+            }).ToList();
 
-            _context.users = users.Select(u => _mapper.Map<User>(u)).ToList();
+            _context.fullprojects = projects.Select(x => new FullProjectsDAL()
+            {
+                Id = x.Id,
+                Author = _mapper.Map<UserDAL>(users.Where(y => y.Id == x.AuthorId).FirstOrDefault()),
+                CreatedAt = x.CreatedAt,
+                Deadline = x.Deadline,
+                Description = x.Description,
+                Name = x.Name,
+                Tasks = fulltasks.Where(y => y.ProjectId == x.Id).ToList(),
+                Team = fullteams.Where(y=>y.Id == x.TeamId).FirstOrDefault()
+            }).ToList();
 
-            var all = projects.GroupJoin(_context.tasks, p => p.Id, tks => tks.ProjectId, (p, tks) => new { project = p, tasks = tks })
-                .Join(users, p => p.project.AuthorId, u => u.Id, (p, u) => new { project = p.project, tasks = p.tasks, author = u })
-                .Join(_context.teams, p => p.project.TeamId, tms => tms.Id, (p, tms) => new Project(p.project, p.tasks, _mapper.Map<User>(p.author), tms)).ToList();
 
-            _context.projects = all;
-
-            return Convert.ToBoolean(all.Count);
+            return Convert.ToBoolean(_context.projects.Count);
         }
         public async Task<List<ProjectDTO>> GetProjects()
         {

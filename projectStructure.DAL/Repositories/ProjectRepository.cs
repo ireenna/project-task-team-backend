@@ -4,7 +4,6 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
-using projectStructure.Common.Models;
 
 namespace projectStructure.DAL
 {
@@ -19,19 +18,26 @@ namespace projectStructure.DAL
         {
             return context.projects.ToList() as List<TEntity>;
         }
+        public virtual ProjectDAL Get(int id)
+        {
+            var a= context.projects.Where(x=>x.Id == id).FirstOrDefault();
+            return a;
+        }
         public virtual void Create(TEntity entity, string createdBy = null)
         {
-            context.projects.Add(entity as Project);
+            var project = (entity as ProjectDAL);
+            project.Id = context.projects.Count();
+            context.projects.Add(project);
         }
         public virtual void Update(TEntity entity, string updatedBy = null)
         {
-            context.projects.Add(entity as Project);
+            var p = entity as ProjectDAL;
+            context.projects[p.Id] = entity as ProjectDAL;
         }
         public virtual void Delete(int id)
         {
-            var entity = context.projects.Where(x => x.Id == id);
-            var dbSet = context.projects;
-            dbSet.Remove(entity as Project);
+            var entity = context.projects.Where(x => x.Id == id).FirstOrDefault();
+            context.projects.Remove(entity);
         }
     }
 }
