@@ -24,11 +24,11 @@ namespace projectStructureApp
             string strResponse = await response.Content.ReadAsStringAsync();
             return JsonConvert.DeserializeObject<Action>(strResponse);
         }
-        public async Task<Dictionary<FullProjectDTOapp, int>> GetQuantityOfUserTasks(int id)
+        public async Task<Dictionary<string, int>> GetQuantityOfUserTasks(int id)
         {
             HttpResponseMessage response = await appClient.GetAsync($"users/{id}/project/alltasks");
             string strResponse = await response.Content.ReadAsStringAsync();
-            return JsonConvert.DeserializeObject<Dictionary<FullProjectDTOapp, int>>(strResponse);
+            return JsonConvert.DeserializeObject<Dictionary<string, int>>(strResponse);
         }
         public async Task<List<FullTasksDTOapp>> GetUserTasks(int id)
         {
@@ -183,5 +183,44 @@ namespace projectStructureApp
             throw new Exception();
         }
         #endregion teams
+        #region users
+        public async Task<List<UserDTOapp>> GetAllUsers()
+        {
+            HttpResponseMessage response = await appClient.GetAsync("Users");
+            string strResponse = await response.Content.ReadAsStringAsync();
+            return JsonConvert.DeserializeObject<List<UserDTOapp>>(strResponse);
+        }
+        public async Task<UserDTOapp> GetUser(int id)
+        {
+            HttpResponseMessage response = await appClient.GetAsync("Users/" + id);
+            string strResponse = await response.Content.ReadAsStringAsync();
+            return JsonConvert.DeserializeObject<UserDTOapp>(strResponse);
+        }
+        public async Task<Boolean> CreateUser(UserCreateApp proj)
+        {
+            var jsonProj = JsonConvert.SerializeObject(proj);
+            var data = new StringContent(jsonProj, Encoding.UTF8, "application/json");
+            HttpResponseMessage response = await appClient.PostAsync($"users", data);
+            if (response.StatusCode == HttpStatusCode.Created)
+                return true;
+            throw new Exception();
+        }
+        public async Task<Boolean> UpdateUser(UserUpdateApp proj, int id)
+        {
+            var jsonProj = JsonConvert.SerializeObject(proj);
+            var data = new StringContent(jsonProj, Encoding.UTF8, "application/json");
+            HttpResponseMessage response = await appClient.PutAsync($"users/{id}", data);
+            if (response.StatusCode == HttpStatusCode.OK)
+                return true;
+            throw new Exception();
+        }
+        public async Task<Boolean> DeleteUser(int id)
+        {
+            HttpResponseMessage response = await appClient.DeleteAsync("users/" + id);
+            if (response.StatusCode == HttpStatusCode.OK)
+                return true;
+            throw new Exception();
+        }
+        #endregion users
     }
 }

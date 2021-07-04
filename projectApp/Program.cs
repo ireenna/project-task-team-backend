@@ -18,9 +18,9 @@ namespace projectApp
             var allInfo = await app.RefreshData();
             do
             {
-                //try
-                //{
-                Console.Clear();
+                try
+                {
+                    Console.Clear();
                 Console.Write("Options:\n" +
                     "1. Get the number of tasks from a specific user's project.\n" +
                     "2. Get a list of tasks assigned to a specific user (name < 45 symbols).\n" +
@@ -46,7 +46,7 @@ namespace projectApp
                             break;
                         }
                         foreach (var item in q1)
-                            Console.WriteLine("Project: " + item.Key.Id + " Tasks count:" + item.Value);
+                            Console.WriteLine("Project: " + item.Key + " Tasks count:" + item.Value);
                         break;
 
                     case 2:
@@ -118,7 +118,7 @@ namespace projectApp
                         if (crudOperation > 5 || crudOperation < 0)
                             throw new Exception();
 
-                        Console.Write("CRUD operations:\n" +
+                        Console.Write("Objects:\n" +
                         "1. Projects.\n" +
                         "2. Users.\n" +
                         "3. Tasks.\n" +
@@ -142,12 +142,12 @@ namespace projectApp
                         Console.WriteLine("There is no such operation. Please, try again.");
                         break;
                 }
-                //}
-                //catch
-                //{
-                //    Console.WriteLine("Wrong input. Please, try again.");
-                //}
-                Console.ReadLine();
+            }
+                catch
+            {
+                Console.WriteLine("Wrong input. Please, try again.");
+            }
+            Console.ReadLine();
             } while (true);
             async Task Create(int obj)
             {
@@ -171,6 +171,25 @@ namespace projectApp
                             Name = name,
                             Description = description,
                             Deadline = deadline
+                        });
+                        break;
+                    case 2:
+                        Console.Write("FirstName:");
+                        string fName = Console.ReadLine();
+                        Console.Write("LastName:");
+                        string lName = Console.ReadLine();
+                        Console.Write("Email:");
+                        string email = Console.ReadLine();
+                        Console.Write("BirthDay:");
+                        DateTime bday = Convert.ToDateTime(Console.ReadLine());
+                        Console.Write("TeamId:");
+                        int team_Id = Convert.ToInt32(Console.ReadLine());
+                        isCreated = await app.CreateUser(new UserCreateApp { 
+                            BirthDay = bday, 
+                            Email = email, 
+                            FirstName = fName, 
+                            LastName = lName, 
+                            TeamId = team_Id
                         });
                         break;
                     case 3:
@@ -210,6 +229,10 @@ namespace projectApp
                         var projects = await app.GetAllProjects();
                         projects.ForEach(x => Console.WriteLine(x.ToString()));
                         break;
+                    case 2:
+                        var users = await app.GetAllUsers();
+                        users.ForEach(x => Console.WriteLine(x.ToString()));
+                        break;
                     case 3:
                         var tasks = await app.GetAllTasks();
                         tasks.ForEach(x => Console.WriteLine(x.ToString()));
@@ -226,6 +249,7 @@ namespace projectApp
                 switch (obj)
                 {
                     case 1: await UpdateProject(obj); break;
+                    case 2: await UpdateUser(obj); break;
                     case 3: await UpdateTask(obj); break;
                     case 4: await UpdateTeam(obj); break;
                 }
@@ -375,15 +399,72 @@ namespace projectApp
                     default: break;
                 }
             }
+            async Task UpdateUser(int obj)
+            {
+                Console.Write("Id: ");
+                int id = Convert.ToInt32(Console.ReadLine());
+                var user = await app.GetUser(id);
+                Console.WriteLine(user.ToString());
+                Console.Write("Properties:\n" +
+                    "1. FirstName.\n2. LastName.\n3. BirthDay.\n4. Email.\n5. TeamId.\nChoose what you want to change: ");
+                int command = Convert.ToInt32(Console.ReadLine());
+                var updatedUser = new UserUpdateApp()
+                {
+                    BirthDay = user.BirthDay,
+                    Email = user.Email,
+                    FirstName = user.FirstName,
+                    LastName = user.LastName,
+                    TeamId = user.TeamId
+                };
+                switch (command)
+                {
+                    case 1:
+                        Console.Write($"New FirstName (Previous: {updatedUser.FirstName}): ");
+                        updatedUser.FirstName = Console.ReadLine();
+                        break;
+                    case 2:
+                        Console.Write($"New LastName (Previous: {updatedUser.LastName}): ");
+                        updatedUser.LastName = Console.ReadLine();
+                        break;
+                    case 3:
+                        Console.Write($"New B-Day (Previous: {updatedUser.BirthDay}): ");
+                        updatedUser.BirthDay = Convert.ToDateTime(Console.ReadLine());
+                        break;
+                    case 4:
+                        Console.Write($"New Email (Previous: {updatedUser.Email}): ");
+                        updatedUser.Email = Console.ReadLine();
+                        break;
+                    case 5:
+                        Console.Write($"New TeamId (Previous: {updatedUser.TeamId}): ");
+                        updatedUser.TeamId = Convert.ToInt32(Console.ReadLine());
+                        break;
+                    default: break;
+                }
+                Console.Write("Update? (y/n): ");
+                string yesNo = Console.ReadLine();
+                switch (yesNo)
+                {
+                    case "y" or "yes":
+                        bool isUpdated = await app.UpdateUser(updatedUser, user.Id);
+                        if (isUpdated) Console.WriteLine("Updated successfully.");
+                        break;
+                    case "n" or "no":
+                        break;
+                    default: break;
+                }
+            }
             async Task Delete(int obj)
             {
-                Console.WriteLine("Id: ");
+                Console.Write("Id: ");
                 int id = Convert.ToInt32(Console.ReadLine());
                 bool isDeleted = false;
                 switch (obj)
                 {
                     case 1:
                         isDeleted = await app.DeleteProject(id);
+                        break;
+                    case 2:
+                        isDeleted = await app.DeleteUser(id);
                         break;
                     case 3:
                         isDeleted = await app.DeleteTask(id);

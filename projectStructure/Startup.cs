@@ -14,6 +14,8 @@ using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
 using projectStructure.BLL.MappingProfiles;
 using projectStructure.BLL.Services;
+using projectStructure.DAL;
+using Microsoft.EntityFrameworkCore;
 
 namespace projectStructure
 {
@@ -38,11 +40,12 @@ namespace projectStructure
             },
             Assembly.GetExecutingAssembly());
 
-            services.AddSingleton<DataService>();
             services.AddScoped<ProjectService>();
             services.AddScoped<LinqService>();
             services.AddScoped<TeamService>();
             services.AddScoped<TasksService>();
+            services.AddScoped<UserService>();
+            services.AddDbContext<ProjectsDbContext>(options => options.UseSqlServer(Configuration.GetConnectionString("ProjectsDatabase")));
             services.AddControllers();
             services.AddSwaggerGen(c =>
             {

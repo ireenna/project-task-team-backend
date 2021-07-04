@@ -4,42 +4,71 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using AutoMapper;
-using projectStructure.BLL.Models;
 using projectStructure.BLL.ModelsInfo;
 using projectStructure.DAL;
-using projectStructure.DAL.DAL;
 using projectStructure.DAL.Repositories;
 
 namespace projectStructure.BLL.Services
 {
     public sealed class LinqService : BaseService
     {
-        private readonly FullProjectRepository<FullProjectsDAL> _projRepo;
-        public LinqService(IMapper mapper) : base(mapper)
+        private readonly BaseRepository<Project> _projRepo;
+        private readonly BaseRepository<User> _userRepo;
+        private readonly BaseRepository<Team> _teamRepo;
+        private readonly BaseRepository<Tasks> _taskRepo;
+        public LinqService(IMapper mapper, ProjectsDbContext context) : base(mapper, context)
         {
-            _projRepo = new FullProjectRepository<FullProjectsDAL>();
+            _projRepo = new BaseRepository<Project>(context);
+            _userRepo = new BaseRepository<User>(context);
+            _teamRepo = new BaseRepository<Team>(context);
+            _taskRepo = new BaseRepository<Tasks>(context);
         }
-        public Dictionary<FullProjectsDAL, int> GetQuantityOfUserTasks(int id)
+        public List<Project> GetFullProjects()
         {
-            var info = _projRepo.Get()
-                .Where(x => x.Author.Id == id)
-                .ToDictionary(x => x, x => x.Tasks.Count());
+            return _projRepo.Get().Select(x => new Project
+            {
+                Author = _userRepo.GetByID(x.AuthorId),
+                CreatedAt = x.CreatedAt,
+                Deadline = x.Deadline,
+                Description = x.Description,
+                Name = x.Name,
+                Tasks = _taskRepo.Get(y => y.ProjectId == x.Id).Select(t => new Tasks()
+                {
+                    CreatedAt = t.CreatedAt,
+                    FinishedAt = t.FinishedAt,
+                    Description = t.Description,
+                    Name = t.Name,
+                    State = t.State,
+                    ProjectId = t.ProjectId,
+                    PerformerId = t.PerformerId,
+                    Performer = _userRepo.GetByID(t.PerformerId)
+                }).ToList(),
+                Team = _teamRepo.Get(t=>t.Id == x.TeamId).Select(t=> new Team() { 
+                    CreatedAt = t.CreatedAt,
+                    Name = t.Name
+                }).FirstOrDefault()
+            }).ToList();
+        }
+        public Dictionary<string, int> GetQuantityOfUserTasks(int id)
+        {
+            var info = GetFullProjects()
+                .Where(x => x.Author?.Id == id)
+                .ToDictionary(x => $"{x.Id}. {x.Name}", x => x.Tasks.Count());
 
             return info;
         }
         public List<Tasks> GetUserTasks(int id)
         {
-            var info = _projRepo.Get()
+            var info = GetFullProjects()
                 .SelectMany(pr => pr.Tasks)
                 .Where(x => x.Performer.Id == id && x.Name.Length < 45)
-                .Select(x=>_mapper.Map<Tasks>(x))
                 .ToList();
 
             return info;
         }
         public List<(int id, string name)> GetUserFinishedTasks(int id)
         {
-            var info = _projRepo.Get()
+            var info = GetFullProjects()
                 .SelectMany(p => p.Tasks)
                 .Where(x => x.Performer.Id == id && x.FinishedAt <= DateTime.Now && x.FinishedAt >= new DateTime(2021, 1, 1))
                 .Select(x => (id: x.Id, name: x.Name))
@@ -49,16 +78,20 @@ namespace projectStructure.BLL.Services
         }
         public List<(int id, string name, List<User> users)> GetSortedUsersTeams()
         {
-            var info = _projRepo.Get()
-                .Select(x => x.Team).Distinct()
+            var info = GetFullProjects()
+                .Select(x => new { 
+                    Id = x.Team.Id,
+                    Name = x.Team.Name, 
+                    Team = x.Team.CreatedAt,
+                    Participants = _userRepo.Get(u=>u.TeamId == x.TeamId)}).Distinct()
                 .Where(x => x.Participants.All(x => x.BirthDay <= DateTime.Now.AddYears(-10)))
-                .Select(x => (x.Id, x.Name, x.Participants.OrderByDescending(p => p.RegisteredAt).Select(x=>_mapper.Map<User>(x)).ToList())).ToList();
+                .Select(x => (x.Id, x.Name, x.Participants.OrderByDescending(p => p.RegisteredAt).ToList())).ToList();
 
             return info;
         }
-        public List<IGrouping<UserDAL, FullTasksDAL>> GetSortedUsersWithTasks()
+        public List<IGrouping<User, Tasks>> GetSortedUsersWithTasks()
         {
-            var info = _projRepo.Get()
+            var info = GetFullProjects()
                 .SelectMany(p => p.Tasks)
                 .OrderByDescending(t => t.Name.Length)
                 .GroupBy(t => t.Performer)
@@ -69,34 +102,36 @@ namespace projectStructure.BLL.Services
         }
         public UserTaskInfo GetUserTasksInfo(int id)
         {
-            var info = _projRepo.Get()
+            var info = GetFullProjects()
                 .SelectMany(p => p.Tasks)
                 .Where(x => x.Performer.Id == id)
                 .GroupBy(x => x.Performer)
                 .Where(x => x.Key.Id == id)
-                .Select(x => new {
+                .Select(x => new
+                {
                     user = x.Key,
                     lastProject = _projRepo.Get().Where(p => p.Team.Participants.Contains(x.Key)).OrderByDescending(x => x.CreatedAt).FirstOrDefault(),
                     tasks = x
                 }).Select(x => new UserTaskInfo()
                 {
-                    User = _mapper.Map<User>(x.user),
-                    LastProject = _mapper.Map<Project>(x.lastProject),
+                    User = x.user,
+                    LastProject = x.lastProject,
                     LastProjectTasksCount = x.lastProject?.Tasks.Count() ?? 0,
                     RejectedTasks = x.tasks.Where(x => x.FinishedAt == null | (int)x.State == 2).Count(),
-                    TheLongestTask = x.tasks.OrderByDescending(x => (x.FinishedAt ?? DateTime.Now) - x.CreatedAt).Select(x=>_mapper.Map<Tasks>(x)).FirstOrDefault()
+                    TheLongestTask = x.tasks.OrderByDescending(x => (x.FinishedAt ?? DateTime.Now) - x.CreatedAt).FirstOrDefault()
                 }).FirstOrDefault();
 
-            return info;
+
+            return null;
         }
         public List<ProjectsInfo> GetProjectsInfo()
         {
-            var info = _projRepo.Get().Select(p => new ProjectsInfo()
+            var info = GetFullProjects().Select(p => new ProjectsInfo()
             {
-                Project = _mapper.Map<Project>(p),
-                LongestTaskByDescr = p.Tasks.OrderByDescending(t => t.Description.Length).Select(x=>_mapper.Map<Tasks>(x)).FirstOrDefault(),
-                ShortestTaskByName = p.Tasks.OrderBy(t => t.Name.Length).Select(x=>_mapper.Map<Tasks>(x)).FirstOrDefault(),
-                UsersCount = p.Description.Length > 20 ^ p.Tasks.Count < 3 ? p.Team.Participants.Count : 0
+                Project = p,
+                LongestTaskByDescr = p.Tasks?.OrderByDescending(t => t.Description.Length).FirstOrDefault(),
+                ShortestTaskByName = p.Tasks?.OrderBy(t => t.Name.Length).FirstOrDefault(),
+                UsersCount = p.Description.Length > 20 ^ p.Tasks?.Count < 3 ? p.Team.Participants?.Count : 0
             }).ToList();
 
             return info;

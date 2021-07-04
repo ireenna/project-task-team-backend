@@ -15,5 +15,9 @@ namespace projectStructureApp.ModelsDTOapp
         public string Email { get; set; }
         public DateTime RegisteredAt { get; set; }
         public DateTime BirthDay { get; set; }
+        public override string ToString()
+        {
+            return $"{Id}. Name: {FirstName} {LastName}. TeamId: {TeamId}. Email: {Email}.\nBirthday: {BirthDay}. RegisteredAt: {RegisteredAt}.\n ";
+        }
     }
 }

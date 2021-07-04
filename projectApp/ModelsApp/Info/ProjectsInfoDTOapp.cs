@@ -11,7 +11,7 @@ namespace projectStructureApp.ModelsDTOapp
         public FullProjectDTOapp Project { get; set; }
         public FullTasksDTOapp LongestTaskByDescr { get; set; }
         public FullTasksDTOapp ShortestTaskByName { get; set; }
-        public int UsersCount { get; set; }
+        public int? UsersCount { get; set; }
         public override string ToString()
         {
             return $"Project: {Project.Name}.\n" +

@@ -17,9 +17,4 @@ C:\Users\Irina\source\repos\projectStructure\projectApp\obj\Debug\net5.0\project
 C:\Users\Irina\source\repos\projectStructure\projectApp\bin\Debug\net5.0\projectStructure.Common.dll
 C:\Users\Irina\source\repos\projectStructure\projectApp\bin\Debug\net5.0\projectStructure.Common.pdb
 C:\Users\Irina\source\repos\projectStructure\projectApp\obj\Debug\net5.0\projectStructureApp.csproj.CopyComplete
-C:\Users\Irina\source\repos\projectStructure\projectApp\bin\Debug\net5.0\AutoMapper.dll
 C:\Users\Irina\source\repos\projectStructure\projectApp\bin\Debug\net5.0\Newtonsoft.Json.dll
-C:\Users\Irina\source\repos\projectStructure\projectApp\bin\Debug\net5.0\projectStructure.BLL.dll
-C:\Users\Irina\source\repos\projectStructure\projectApp\bin\Debug\net5.0\projectStructure.DAL.dll
-C:\Users\Irina\source\repos\projectStructure\projectApp\bin\Debug\net5.0\projectStructure.BLL.pdb
-C:\Users\Irina\source\repos\projectStructure\projectApp\bin\Debug\net5.0\projectStructure.DAL.pdb

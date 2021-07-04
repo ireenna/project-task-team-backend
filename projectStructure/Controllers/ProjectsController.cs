@@ -4,12 +4,10 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
-using projectStructure.BLL.Models;
 using projectStructure.BLL.ModelsInfo;
 using projectStructure.BLL.Services;
 using projectStructure.Common.DTOapp;
 using projectStructure.DAL;
-using projectStructure.DAL.DAL;
 
 namespace projectStructure.Controllers
 {
@@ -17,24 +15,22 @@ namespace projectStructure.Controllers
     [Route("api/[controller]")]
     public class ProjectsController : ControllerBase
     {
-        private readonly DataService _dataService;
         private readonly ProjectService _projectService;
         private readonly LinqService _linqService;
 
-        public ProjectsController(DataService dataService, ProjectService projectService, LinqService linqService)
+        public ProjectsController(ProjectService projectService, LinqService linqService)
         {
-            _dataService = dataService;
             _projectService = projectService;
             _linqService = linqService;
         }
 
         [HttpGet]
-        public IEnumerable<ProjectDAL> Get()
+        public IEnumerable<Project> Get()
         {
             return _projectService.GetAllProjects();
         }
         [HttpGet("{id}")]
-        public ProjectDAL Get([FromRoute] int id)
+        public Project Get([FromRoute] int id)
         {
             return _projectService.GetProject(id);
         }

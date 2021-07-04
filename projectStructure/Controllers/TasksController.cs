@@ -14,20 +14,18 @@ namespace projectStructure.WebAPI.Controllers
     [Route("api/[controller]")]
     public class TasksController : ControllerBase
     {
-        private readonly LinqService _linqService;
         private readonly TasksService _tasksService;
-        public TasksController(TasksService teamService, LinqService linqService)
+        public TasksController(TasksService teamService)
         {
             _tasksService = teamService;
-            _linqService = linqService;
         }
         [HttpGet]
-        public IEnumerable<TasksDAL> Get()
+        public IEnumerable<Tasks> Get()
         {
             return _tasksService.GetAllTasks();
         }
         [HttpGet("{id}")]
-        public TasksDAL Get([FromRoute] int id)
+        public Tasks Get([FromRoute] int id)
         {
             return _tasksService.GetTask(id);
         }

@@ -4,8 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using AutoMapper;
-using projectStructure.BLL.Models;
-using projectStructure.Common.DTO;
+using projectStructure.Common.DTOapp.Create;
 using projectStructure.DAL;
 
 namespace projectStructure.BLL.MappingProfiles
@@ -14,11 +13,8 @@ namespace projectStructure.BLL.MappingProfiles
     {
         public UserProfile()
         {
-            CreateMap<UserDTO, User>();
-            CreateMap<User, UserDAL>();
-            CreateMap<UserDAL, User>();
-            CreateMap<UserDTO, UserDAL>();
-
+            CreateMap<UserCreateDTO, User>()
+                .ForMember(dest => dest.RegisteredAt, s => s.MapFrom(x => DateTime.Now));
         }
     }
 }

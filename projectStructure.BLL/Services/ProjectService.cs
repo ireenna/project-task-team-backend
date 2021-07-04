@@ -4,35 +4,47 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using AutoMapper;
-using projectStructure.BLL.Models;
 using projectStructure.Common.DTOapp;
 using projectStructure.DAL;
-using projectStructure.DAL.DAL;
 using projectStructure.DAL.Repositories;
 
 namespace projectStructure.BLL.Services
 {
     public sealed class ProjectService : BaseService
     {
-        private readonly ProjectRepository<ProjectDAL> _projRepo;
-        public ProjectService(IMapper mapper) : base(mapper) {
-            _projRepo = new ProjectRepository<ProjectDAL>();
+        private readonly BaseRepository<Project> _projRepo;
+        private readonly BaseRepository<Team> _teamRepo;
+        private readonly BaseRepository<User> _userRepo;
+        private readonly BaseRepository<Tasks> _tasksRepo;
+        public ProjectService(IMapper mapper, ProjectsDbContext context) : base(mapper, context) {
+            _projRepo = new BaseRepository<Project>(context);
+            _teamRepo = new BaseRepository<Team>(context);
+            _userRepo = new BaseRepository<User>(context);
+            _tasksRepo = new BaseRepository<Tasks>(context);
         }
 
-        public IEnumerable<ProjectDAL> GetAllProjects()
+        public IEnumerable<Project> GetAllProjects()
         {
             return _projRepo.Get();
         }
-        public ProjectDAL GetProject(int id)
+        public Project GetProject(int id)
         {            
-            return _projRepo.Get(id);
+            return _projRepo.GetByID(id);
         }
         public bool Create(ProjectCreateDTO proj)
         {
             try
             {
-                var project = _mapper.Map<ProjectDAL>(proj);
-                _projRepo.Create(project);
+                var project = new Project {
+                    Author = _userRepo.GetByID(proj.AuthorId),
+                    CreatedAt = DateTime.Now,
+                    Deadline = proj.Deadline,
+                    Description = proj.Description,
+                    Name = proj.Name,
+                    Team = _teamRepo.GetByID(proj.TeamId)
+                };
+                _projRepo.Insert(project);
+                _context.SaveChanges();
                 return true;
             }
             catch
@@ -45,12 +57,13 @@ namespace projectStructure.BLL.Services
         {
             try
             {
-                var oldProject = _projRepo.Get(id);
+                var oldProject = _projRepo.GetByID(id);
                 oldProject.Deadline = proj.Deadline;
                 oldProject.Description = proj.Description;
                 oldProject.Name = proj.Name;
-                oldProject.TeamId = proj.TeamId;
+                oldProject.Team = _teamRepo.GetByID(proj.TeamId);
                 _projRepo.Update(oldProject);
+                _context.SaveChanges();
                 return true;
             }
             catch
@@ -64,6 +77,7 @@ namespace projectStructure.BLL.Services
             try
             {
                 _projRepo.Delete(id);
+                _context.SaveChanges();
                 return true;
             }
             catch

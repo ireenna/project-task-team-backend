@@ -4,11 +4,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using AutoMapper;
-using projectStructure.BLL.Models;
-using projectStructure.Common.DTO;
 using projectStructure.Common.DTOapp.Create;
 using projectStructure.DAL;
-using projectStructure.DAL.DAL;
 
 namespace projectStructure.BLL.MappingProfiles
 {
@@ -16,14 +13,9 @@ namespace projectStructure.BLL.MappingProfiles
     {
         public TasksProfile()
         {
-            CreateMap<TasksDTO, Tasks>();
-            CreateMap<Tasks, TasksDAL>();
-            CreateMap<TasksDTO, TasksDAL>();
-            CreateMap<FullTasksDAL, Tasks>()
-                .ForMember(dest => dest.PerformerId, s => s.MapFrom(x => x.Performer.Id));
-            CreateMap<TasksCreateDTO, TasksDAL>()
+            CreateMap<TasksCreateDTO, Tasks>()
                 .ForMember(dest => dest.CreatedAt, s => s.MapFrom(x => DateTime.Now))
-                .ForMember(dest => dest.State, s => s.MapFrom(x => TaskStateDAL.ToDo));
+                .ForMember(dest => dest.State, s => s.MapFrom(x => TaskState.ToDo));
         }
     }
 }

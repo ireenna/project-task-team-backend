@@ -22,12 +22,12 @@ namespace projectStructure.WebAPI.Controllers
             _linqService = linqService;
         }
         [HttpGet]
-        public IEnumerable<TeamDAL> Get()
+        public IEnumerable<Team> Get()
         {
             return _teamService.GetAllTeams();
         }
         [HttpGet("{id}")]
-        public TeamDAL Get([FromRoute] int id)
+        public Team Get([FromRoute] int id)
         {
             return _teamService.GetTeam(id);
         }

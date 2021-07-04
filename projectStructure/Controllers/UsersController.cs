@@ -4,11 +4,11 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
-using projectStructure.BLL.Models;
 using projectStructure.BLL.ModelsInfo;
 using projectStructure.BLL.Services;
+using projectStructure.Common.DTOapp.Create;
+using projectStructure.Common.DTOapp.Update;
 using projectStructure.DAL;
-using projectStructure.DAL.DAL;
 
 namespace projectStructure.WebAPI.Controllers
 {
@@ -17,13 +17,50 @@ namespace projectStructure.WebAPI.Controllers
     public class UsersController : ControllerBase
     {
         private readonly LinqService _linqService;
-
-        public UsersController(LinqService linqService)
+        private readonly UserService _userService;
+        public UsersController(UserService userService, LinqService linqService)
         {
+            _userService = userService;
             _linqService = linqService;
         }
+
+        [HttpGet]
+        public IEnumerable<User> Get()
+        {
+            return _userService.GetAllUsers();
+        }
+        [HttpGet("{id}")]
+        public User Get([FromRoute] int id)
+        {
+            return _userService.GetUser(id);
+        }
+        [HttpPost]
+        public ActionResult Create([FromBody] UserCreateDTO proj)
+        {
+            if (_userService.Create(proj))
+                return StatusCode(201);
+
+            return BadRequest();
+        }
+        [HttpPut("{id}")]
+        public ActionResult Update([FromBody] UserUpdateDTO proj, [FromRoute] int id)
+        {
+            if (_userService.Update(proj, id))
+                return Ok();
+
+            return BadRequest();
+        }
+        [HttpDelete("{id}")]
+        public ActionResult Delete([FromRoute] int id)
+        {
+            if (_userService.Delete(id))
+                return Ok();
+
+            return BadRequest();
+        }
+        
         [HttpGet("{id}/project/alltasks")]
-        public Dictionary<FullProjectsDAL, int> GetQuantityOfUserTasks([FromRoute] int id)
+        public Dictionary<string, int> GetQuantityOfUserTasks([FromRoute] int id)
         {
             return _linqService.GetQuantityOfUserTasks(id);
         }
@@ -38,7 +75,7 @@ namespace projectStructure.WebAPI.Controllers
             return JsonConvert.SerializeObject(_linqService.GetUserFinishedTasks(id), Formatting.Indented);
         }
         [HttpGet("tasks/sorted")]
-        public List<IGrouping<UserDAL, FullTasksDAL>> GetSortedUsersWithTasks()
+        public List<IGrouping<User, Tasks>> GetSortedUsersWithTasks()
         {
             return _linqService.GetSortedUsersWithTasks();
         }
