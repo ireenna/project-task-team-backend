@@ -12,7 +12,10 @@ namespace projectStructure.BLL.Services
     {
         private protected readonly ProjectsDbContext _context;
         private protected readonly IMapper _mapper;
-
+        public BaseService(IMapper mapper)
+        {
+            _mapper = mapper;
+        }
         public BaseService(IMapper mapper, ProjectsDbContext context)
         {
             _context =context;

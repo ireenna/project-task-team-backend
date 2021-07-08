@@ -13,6 +13,10 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "projectStructureApp", "proj
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "projectStructure.BLL", "projectStructure.BLL\projectStructure.BLL.csproj", "{0FBCE7A8-6B51-43BC-A3D6-2F24B51E947C}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "projectStructure.BLL.Tests", "projectStructure.BLL.Tests\projectStructure.BLL.Tests.csproj", "{EBCD6FC6-01EA-4E31-8C55-79D8EB48C015}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "projectStructure.WebAPI.IntegrationTests", "projectStructure.WebAPI.IntegrationTests\projectStructure.WebAPI.IntegrationTests.csproj", "{C260A56F-C5A5-47DC-A8EA-D0097B26902B}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -39,6 +43,14 @@ Global
 		{0FBCE7A8-6B51-43BC-A3D6-2F24B51E947C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0FBCE7A8-6B51-43BC-A3D6-2F24B51E947C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{0FBCE7A8-6B51-43BC-A3D6-2F24B51E947C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EBCD6FC6-01EA-4E31-8C55-79D8EB48C015}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EBCD6FC6-01EA-4E31-8C55-79D8EB48C015}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EBCD6FC6-01EA-4E31-8C55-79D8EB48C015}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EBCD6FC6-01EA-4E31-8C55-79D8EB48C015}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C260A56F-C5A5-47DC-A8EA-D0097B26902B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C260A56F-C5A5-47DC-A8EA-D0097B26902B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C260A56F-C5A5-47DC-A8EA-D0097B26902B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C260A56F-C5A5-47DC-A8EA-D0097B26902B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

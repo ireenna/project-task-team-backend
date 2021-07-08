@@ -16,8 +16,9 @@ using projectStructure.BLL.MappingProfiles;
 using projectStructure.BLL.Services;
 using projectStructure.DAL;
 using Microsoft.EntityFrameworkCore;
+using projectStructure.DAL.Repositories;
 
-namespace projectStructure
+namespace projectStructure.WebAPI
 {
     public class Startup
     {
@@ -39,6 +40,11 @@ namespace projectStructure
                 cfg.AddProfile<TeamProfile>();
             },
             Assembly.GetExecutingAssembly());
+
+            services.AddTransient<IRepository<Project>, BaseRepository<Project>>();
+            services.AddTransient<IRepository<User>, BaseRepository<User>>();
+            services.AddTransient<IRepository<Team>, BaseRepository<Team>>();
+            services.AddTransient<IRepository<Tasks>, BaseRepository<Tasks>>();
 
             services.AddScoped<ProjectService>();
             services.AddScoped<LinqService>();

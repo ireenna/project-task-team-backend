@@ -37,10 +37,17 @@ namespace projectStructure.Controllers
         [HttpPost]
         public ActionResult Create([FromBody] ProjectCreateDTO proj)
         {
-            if(_projectService.Create(proj))
-                return StatusCode(201);
+            try
+            {
+                if (_projectService.Create(proj)) return StatusCode(201);
+                return BadRequest();
+            }
+            catch
+            {
+                return BadRequest();
+            }
             
-            return BadRequest();
+           
         }
         [HttpPut("{id}")]
         public ActionResult Update([FromBody] ProjectUpdateDTO proj, [FromRoute] int id)

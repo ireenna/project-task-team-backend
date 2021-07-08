@@ -12,10 +12,10 @@ namespace projectStructure.BLL.Services
 {
     public sealed class TeamService : BaseService
     {
-        private readonly BaseRepository<Team> _teamRepo;
-        public TeamService(IMapper mapper, ProjectsDbContext context) : base(mapper, context)
+        private readonly IRepository<Team> _teamRepo;
+        public TeamService(IMapper mapper, IRepository<Team> teamRepo) : base(mapper)
         {
-            _teamRepo = new BaseRepository<Team>(context);
+            _teamRepo = teamRepo;
         }
 
         public IEnumerable<Team> GetAllTeams()
@@ -32,7 +32,7 @@ namespace projectStructure.BLL.Services
             {
                 var team = _mapper.Map<Team>(item);
                 _teamRepo.Insert(team);
-                _context.SaveChanges();
+                _teamRepo.SaveChanges();
                 return true;
             }
             catch
@@ -48,7 +48,7 @@ namespace projectStructure.BLL.Services
                 var oldTeam = _teamRepo.GetByID(id);
                 oldTeam.Name = proj.Name;
                 _teamRepo.Update(oldTeam);
-                _context.SaveChanges();
+                _teamRepo.SaveChanges();
                 return true;
             }
             catch
@@ -62,7 +62,7 @@ namespace projectStructure.BLL.Services
             try
             {
                 _teamRepo.Delete(id);
-                _context.SaveChanges();
+                _teamRepo.SaveChanges();
                 return true;
             }
             catch

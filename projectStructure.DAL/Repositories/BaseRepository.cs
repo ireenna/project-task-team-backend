@@ -60,5 +60,9 @@ namespace projectStructure.DAL.Repositories
             dbSet.Attach(entityToUpdate);
             context.Entry(entityToUpdate).State = EntityState.Modified;
         }
+        public virtual void SaveChanges()
+        {
+            context.SaveChanges();
+        }
     }
 }

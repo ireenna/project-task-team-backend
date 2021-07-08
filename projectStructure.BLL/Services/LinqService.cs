@@ -4,29 +4,31 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using AutoMapper;
+using projectStructure.BLL.Interfaces;
 using projectStructure.BLL.ModelsInfo;
 using projectStructure.DAL;
 using projectStructure.DAL.Repositories;
 
 namespace projectStructure.BLL.Services
 {
-    public sealed class LinqService : BaseService
+    public sealed class LinqService : BaseService, ILinqService
     {
-        private readonly BaseRepository<Project> _projRepo;
-        private readonly BaseRepository<User> _userRepo;
-        private readonly BaseRepository<Team> _teamRepo;
-        private readonly BaseRepository<Tasks> _taskRepo;
-        public LinqService(IMapper mapper, ProjectsDbContext context) : base(mapper, context)
+        private readonly IRepository<Project> _projRepo;
+        private readonly IRepository<User> _userRepo;
+        private readonly IRepository<Team> _teamRepo;
+        private readonly IRepository<Tasks> _taskRepo;
+        public LinqService(IMapper mapper, IRepository<Project> projRepo, IRepository<User> userRepo, IRepository<Team> teamRepo, IRepository<Tasks> taskRepo) : base(mapper)
         {
-            _projRepo = new BaseRepository<Project>(context);
-            _userRepo = new BaseRepository<User>(context);
-            _teamRepo = new BaseRepository<Team>(context);
-            _taskRepo = new BaseRepository<Tasks>(context);
+            _projRepo = projRepo;
+            _userRepo = userRepo;
+            _teamRepo = teamRepo;
+            _taskRepo = taskRepo;
         }
         public List<Project> GetFullProjects()
         {
             return _projRepo.Get().Select(x => new Project
             {
+                Id = x.Id,
                 Author = _userRepo.GetByID(x.AuthorId),
                 CreatedAt = x.CreatedAt,
                 Deadline = x.Deadline,
@@ -34,6 +36,7 @@ namespace projectStructure.BLL.Services
                 Name = x.Name,
                 Tasks = _taskRepo.Get(y => y.ProjectId == x.Id).Select(t => new Tasks()
                 {
+                    Id = t.Id,
                     CreatedAt = t.CreatedAt,
                     FinishedAt = t.FinishedAt,
                     Description = t.Description,
@@ -45,15 +48,22 @@ namespace projectStructure.BLL.Services
                 }).ToList(),
                 Team = _teamRepo.Get(t=>t.Id == x.TeamId).Select(t=> new Team() { 
                     CreatedAt = t.CreatedAt,
-                    Name = t.Name
+                    Name = t.Name,
+                    Id = t.Id
                 }).FirstOrDefault()
             }).ToList();
         }
-        public Dictionary<string, int> GetQuantityOfUserTasks(int id)
+        public Dictionary<Project, int> GetQuantityOfUserTasks(int id)
         {
             var info = GetFullProjects()
                 .Where(x => x.Author?.Id == id)
-                .ToDictionary(x => $"{x.Id}. {x.Name}", x => x.Tasks.Count());
+                .ToDictionary(x => x, x => x.Tasks.Count());
+
+            if (info.Count == 0)
+            {
+                if (_userRepo.GetByID(id) is null)
+                    throw new ArgumentOutOfRangeException();
+            }
 
             return info;
         }
@@ -64,6 +74,12 @@ namespace projectStructure.BLL.Services
                 .Where(x => x.Performer.Id == id && x.Name.Length < 45)
                 .ToList();
 
+            if (info.Count == 0)
+            {
+                if (_userRepo.GetByID(id) is null)
+                    throw new ArgumentOutOfRangeException();
+            }
+
             return info;
         }
         public List<(int id, string name)> GetUserFinishedTasks(int id)
@@ -73,6 +89,12 @@ namespace projectStructure.BLL.Services
                 .Where(x => x.Performer.Id == id && x.FinishedAt <= DateTime.Now && x.FinishedAt >= new DateTime(2021, 1, 1))
                 .Select(x => (id: x.Id, name: x.Name))
                 .ToList();
+
+            if (info.Count == 0)
+            {
+                if (_userRepo.GetByID(id) is null)
+                    throw new ArgumentOutOfRangeException();
+            }
 
             return info;
         }
@@ -121,8 +143,14 @@ namespace projectStructure.BLL.Services
                     TheLongestTask = x.tasks.OrderByDescending(x => (x.FinishedAt ?? DateTime.Now) - x.CreatedAt).FirstOrDefault()
                 }).FirstOrDefault();
 
+            if (info is null)
+            {
+                if (_userRepo.GetByID(id) is null)
+                    throw new ArgumentOutOfRangeException();
+            }
 
-            return null;
+
+            return info;
         }
         public List<ProjectsInfo> GetProjectsInfo()
         {
@@ -133,6 +161,17 @@ namespace projectStructure.BLL.Services
                 ShortestTaskByName = p.Tasks?.OrderBy(t => t.Name.Length).FirstOrDefault(),
                 UsersCount = p.Description.Length > 20 ^ p.Tasks?.Count < 3 ? p.Team.Participants?.Count : 0
             }).ToList();
+
+            return info;
+        }
+        public List<Tasks> GetUserUnfinishedTasks(int id)
+        {
+            var info = GetFullProjects().SelectMany(p => p.Tasks).Where(t => t.Performer.Id == id && t.State != TaskState.Done).ToList();
+            if (info.Count == 0)
+            {
+                if (_userRepo.GetByID(id) is null)
+                    throw new ArgumentOutOfRangeException();
+            }
 
             return info;
         }

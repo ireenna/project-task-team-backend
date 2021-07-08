@@ -13,53 +13,47 @@ namespace projectStructure.BLL.Services
 {
     public sealed class UserService : BaseService
     {
-        private readonly BaseRepository<User> _userRepo;
-        public UserService(IMapper mapper, ProjectsDbContext context) : base(mapper, context)
+        private readonly IRepository<User> _userRepo;
+        private readonly IRepository<Team> _teamRepo;
+        public UserService(IMapper mapper, IRepository<User> userRepo, IRepository<Team> teamRepo) : base(mapper)
         {
-            _userRepo = new BaseRepository<User>(context);
+            _userRepo = userRepo;
+            _teamRepo = teamRepo;
         }
 
-        public IEnumerable<User> GetAllUsers()
+        public List<User> GetAllUsers()
         {
-            return _userRepo.Get();
+            return _userRepo.Get().ToList();
         }
         public User GetUser(int id)
         {
             return _userRepo.GetByID(id);
         }
-        public bool Create(UserCreateDTO item)
+        public int Create(UserCreateDTO item)
         {
-            try
-            {
-                var user = _mapper.Map<User>(item);
-                _userRepo.Insert(user);
-                _context.SaveChanges();
-                return true;
-            }
-            catch
-            {
-                return false;
-            }
+            
+            var user = _mapper.Map<User>(item);
+            _userRepo.Insert(user);
+            _userRepo.SaveChanges();
+            return user.Id;
 
         }
         public bool Update(UserUpdateDTO proj, int id)
         {
-            try
-            {
-                var oldUser = _userRepo.GetByID(id);
-                oldUser.BirthDay = proj.BirthDay;
-                oldUser.Email = proj.Email;
-                oldUser.FirstName = proj.FirstName;
-                oldUser.LastName = proj.LastName;
-                oldUser.TeamId = proj.TeamId;
-                _userRepo.Update(oldUser);
-                _context.SaveChanges();
-                return true;
-            }
-            catch
-            {
-                return false;
-            }
+            if (_userRepo.GetByID(id) is null)
+                throw new ArgumentException();
+
+            var oldUser = _userRepo.GetByID(id);
+            oldUser.BirthDay = proj.BirthDay;
+            oldUser.Email = proj.Email;
+            oldUser.FirstName = proj.FirstName;
+            oldUser.LastName = proj.LastName;
+            if (_teamRepo.GetByID(proj.TeamId) is null)
+                throw new ArgumentException();
+            oldUser.TeamId = proj.TeamId;
+            _userRepo.Update(oldUser);
+            _userRepo.SaveChanges();
+            return true;
 
         }
         public bool Delete(int id)
@@ -67,7 +61,7 @@ namespace projectStructure.BLL.Services
             try
             {
                 _userRepo.Delete(id);
-                _context.SaveChanges();
+                _userRepo.SaveChanges();
                 return true;
             }
             catch

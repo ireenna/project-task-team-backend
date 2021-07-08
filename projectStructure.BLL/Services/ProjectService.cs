@@ -12,15 +12,13 @@ namespace projectStructure.BLL.Services
 {
     public sealed class ProjectService : BaseService
     {
-        private readonly BaseRepository<Project> _projRepo;
-        private readonly BaseRepository<Team> _teamRepo;
-        private readonly BaseRepository<User> _userRepo;
-        private readonly BaseRepository<Tasks> _tasksRepo;
-        public ProjectService(IMapper mapper, ProjectsDbContext context) : base(mapper, context) {
-            _projRepo = new BaseRepository<Project>(context);
-            _teamRepo = new BaseRepository<Team>(context);
-            _userRepo = new BaseRepository<User>(context);
-            _tasksRepo = new BaseRepository<Tasks>(context);
+        private readonly IRepository<Project> _projRepo;
+        private readonly IRepository<Team> _teamRepo;
+        private readonly IRepository<User> _userRepo;
+        public ProjectService(IMapper mapper, IRepository<Project> projRepo, IRepository<Team> teamRepo, IRepository<User> userRepo) : base(mapper) {
+            _projRepo = projRepo;
+            _teamRepo = teamRepo;
+            _userRepo = userRepo;
         }
 
         public IEnumerable<Project> GetAllProjects()
@@ -44,7 +42,7 @@ namespace projectStructure.BLL.Services
                     Team = _teamRepo.GetByID(proj.TeamId)
                 };
                 _projRepo.Insert(project);
-                _context.SaveChanges();
+                _projRepo.SaveChanges();
                 return true;
             }
             catch
@@ -63,7 +61,7 @@ namespace projectStructure.BLL.Services
                 oldProject.Name = proj.Name;
                 oldProject.Team = _teamRepo.GetByID(proj.TeamId);
                 _projRepo.Update(oldProject);
-                _context.SaveChanges();
+                _projRepo.SaveChanges();
                 return true;
             }
             catch
@@ -77,7 +75,7 @@ namespace projectStructure.BLL.Services
             try
             {
                 _projRepo.Delete(id);
-                _context.SaveChanges();
+                _projRepo.SaveChanges();
                 return true;
             }
             catch

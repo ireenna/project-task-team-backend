@@ -26,22 +26,23 @@ namespace projectStructure.DAL.Context
             };
             var projects = new List<Project>()
             {
-                new Project{Id=1, AuthorId = 1, CreatedAt = DateTime.Now, Deadline = new DateTime(2021,07,07), Name = "Super cool project", Description="unbelievable project", TeamId = 1}
+                new Project{Id=1, AuthorId = 1, CreatedAt = DateTime.Now, Deadline = new DateTime(2021,07,07), Name = "Super cool project", Description="unbelievable project", TeamId = 1},
+                new Project{Id=2, AuthorId = 2, CreatedAt = DateTime.Now, Deadline = new DateTime(2021,07,07), Name = "Wowww project", Description=" wow-project", TeamId = 1}
             };
             var tasks = new List<Tasks>()
             {
                 new Tasks{Id=1, CreatedAt = DateTime.Now, Description = "to do something", Name = "First task", PerformerId = 1, ProjectId = 1, State = TaskState.ToDo},
                 new Tasks{Id=2, CreatedAt = DateTime.Now, Description = "to hack", Name = "Secong task", PerformerId = 2, ProjectId = 1, State = TaskState.ToDo},
                 new Tasks{Id=3, CreatedAt = DateTime.Now, Description = "to do refactoring", Name = "Third task", PerformerId = 1, ProjectId = 1, State = TaskState.ToDo},
-                new Tasks{Id=4, CreatedAt = DateTime.Now, Description = "", Name = "Final task", PerformerId = 1, ProjectId = 1, State = TaskState.ToDo}
+                new Tasks{Id=4, CreatedAt = DateTime.Now, Description = "", Name = "Final task loooooooooooooooong nameeeeeeeeeeeeee", PerformerId = 1, ProjectId = 1, State = TaskState.ToDo},
+                new Tasks{Id=5, CreatedAt = DateTime.Now, Description = "to code", Name = "hard task", PerformerId = 1, ProjectId = 2, State = TaskState.Done},
+                new Tasks{Id=6, CreatedAt = DateTime.Now, Description = "to code", Name = "easy task", PerformerId = 1, ProjectId = 2, State = TaskState.InProgress}
             };
 
             modelBuilder.Entity<Team>().HasData(teams);
             modelBuilder.Entity<User>().HasData(users);
             modelBuilder.Entity<Project>().HasData(projects);
             modelBuilder.Entity<Tasks>().HasData(tasks);
-            
-
         }
     }
 }

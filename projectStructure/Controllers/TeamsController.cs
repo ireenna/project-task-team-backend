@@ -34,10 +34,16 @@ namespace projectStructure.WebAPI.Controllers
         [HttpPost]
         public ActionResult Create([FromBody] TeamCreateDTO proj)
         {
-            if (_teamService.Create(proj))
-                return StatusCode(201);
-
-            return BadRequest();
+            try
+            {
+                if (_teamService.Create(proj))
+                    return StatusCode(201);
+                return BadRequest();
+            }
+            catch
+            {
+                return BadRequest();
+            }
         }
         [HttpPut("{id}")]
         public ActionResult Update([FromBody] TeamCreateDTO proj, [FromRoute] int id)

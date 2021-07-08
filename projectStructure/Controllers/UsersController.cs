@@ -37,7 +37,7 @@ namespace projectStructure.WebAPI.Controllers
         [HttpPost]
         public ActionResult Create([FromBody] UserCreateDTO proj)
         {
-            if (_userService.Create(proj))
+            if (Convert.ToBoolean(_userService.Create(proj)))
                 return StatusCode(201);
 
             return BadRequest();
@@ -60,7 +60,7 @@ namespace projectStructure.WebAPI.Controllers
         }
         
         [HttpGet("{id}/project/alltasks")]
-        public Dictionary<string, int> GetQuantityOfUserTasks([FromRoute] int id)
+        public Dictionary<Project, int> GetQuantityOfUserTasks([FromRoute] int id)
         {
             return _linqService.GetQuantityOfUserTasks(id);
         }
@@ -73,6 +73,11 @@ namespace projectStructure.WebAPI.Controllers
         public string GetUserFinishedTasks([FromRoute] int id)
         {
             return JsonConvert.SerializeObject(_linqService.GetUserFinishedTasks(id), Formatting.Indented);
+        }
+        [HttpGet("{id}/tasks/unfinished")]
+        public List<Tasks> GetUserUnfinishedTasks([FromRoute] int id)
+        {
+            return _linqService.GetUserUnfinishedTasks(id);
         }
         [HttpGet("tasks/sorted")]
         public List<IGrouping<User, Tasks>> GetSortedUsersWithTasks()

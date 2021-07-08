@@ -13,14 +13,12 @@ namespace projectStructure.BLL.Services
 {
     public sealed class TasksService : BaseService
     {
-        private readonly BaseRepository<Tasks> _tasksRepo;
-        private readonly BaseRepository<User> _userRepo;
-        private readonly BaseRepository<Project> _projRepo;
-        public TasksService(IMapper mapper, ProjectsDbContext context) : base(mapper, context)
+        private readonly IRepository<Tasks> _tasksRepo;
+        private readonly IRepository<User> _userRepo;
+        public TasksService(IMapper mapper, IRepository<Tasks> tasksRepo, IRepository<User> userRepo) : base(mapper)
         {
-            _tasksRepo = new BaseRepository<Tasks>(context);
-            _userRepo = new BaseRepository<User>(context);
-            _projRepo = new BaseRepository<Project>(context);
+            _tasksRepo = tasksRepo;
+            _userRepo = userRepo;
         }
 
         public IEnumerable<Tasks> GetAllTasks()
@@ -45,7 +43,7 @@ namespace projectStructure.BLL.Services
                     ProjectId = item.ProjectId
                 };
                 _tasksRepo.Insert(task);
-                _context.SaveChanges();
+                _tasksRepo.SaveChanges();
                 return true;
             }
             catch
@@ -56,8 +54,6 @@ namespace projectStructure.BLL.Services
         }
         public bool Update(TasksUpdateDTO task, int id)
         {
-            try
-            {
                 var oldTask = _tasksRepo.GetByID(id);
                 oldTask.Description = task.Description;
                 oldTask.FinishedAt = task.FinishedAt;
@@ -66,13 +62,8 @@ namespace projectStructure.BLL.Services
                 oldTask.ProjectId = task.ProjectId;
                 oldTask.State = (TaskState)task.State;
                 _tasksRepo.Update(oldTask);
-                _context.SaveChanges();
-                return true;
-            }
-            catch
-            {
-                return false;
-            }
+                _tasksRepo.SaveChanges();
+            return true;
 
         }
         public bool Delete(int id)
@@ -80,7 +71,7 @@ namespace projectStructure.BLL.Services
             try
             {
                 _tasksRepo.Delete(id);
-                _context.SaveChanges();
+                _tasksRepo.SaveChanges();
                 return true;
             }
             catch
